@@ -1,31 +1,33 @@
 package com.example.myciclo.ui.viewmodel
 
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.myciclo.MyApplication
+import com.example.myciclo.data.room.AppDatabase
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
             LoginViewModel(
-                usuarioRepository = miApp().container.usuarioRepository,
-                sesionRepository = miApp().container.sesionRepository
+                myApplication().container.usuarioRepository,
+                myApplication().container.sesionRepository
             )
         }
         initializer {
             RegistroViewModel(
-                usuarioRepository = miApp().container.usuarioRepository
+                myApplication().container.usuarioRepository
             )
         }
         initializer {
-            InicioViewModel(
-                sesionRepository = miApp().container.sesionRepository
+            val db = AppDatabase.getInstance(myApplication().applicationContext)
+            DiarioViewModel(
+                db.registroDiarioDao()
             )
         }
     }
 }
 
-private fun CreationExtras.miApp(): MyApplication =
-    this[APPLICATION_KEY] as MyApplication
+fun CreationExtras.myApplication(): MyApplication =
+    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MyApplication)
