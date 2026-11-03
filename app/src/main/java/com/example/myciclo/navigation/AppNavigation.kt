@@ -29,6 +29,11 @@ fun AppNavigation(navController: NavHostController) {
                     navController.navigate("home") {
                         popUpTo("login") { inclusive = true }
                     }
+                },
+                onEntrarInvitado = {
+                    navController.navigate("invitado") {
+                        popUpTo("login") { inclusive = true }
+                    }
                 }
             )
         }
@@ -48,6 +53,19 @@ fun AppNavigation(navController: NavHostController) {
                 onCerrarSesion = {
                     navController.navigate("login") {
                         popUpTo("home") { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable("invitado") {
+            val diarioViewModel: DiarioViewModel = viewModel(factory = AppViewModelProvider.FactoryInvitado)
+            HomeScreen(
+                diarioViewModel = diarioViewModel,
+                esInvitado = true,
+                onCerrarSesion = {
+                    navController.navigate("login") {
+                        popUpTo("invitado") { inclusive = true }
                     }
                 }
             )

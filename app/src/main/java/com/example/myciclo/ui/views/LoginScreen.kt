@@ -24,6 +24,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
@@ -57,6 +58,7 @@ import com.example.myciclo.ui.viewmodel.LoginViewModel
 fun LoginScreen(
     onLoginExitoso: () -> Unit,
     onIrARegistro: () -> Unit,
+    onEntrarInvitado: () -> Unit,
     viewModel: LoginViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -192,6 +194,22 @@ fun LoginScreen(
 
             TextButton(onClick = onIrARegistro) {
                 Text("¿No tienes cuenta? Registrarse", color = CicloPrimary)
+            }
+
+            Spacer(Modifier.height(8.dp))
+
+            OutlinedButton(
+                onClick = onEntrarInvitado,
+                shape = RoundedCornerShape(24.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {
+                Text(
+                    "Continuar sin iniciar sesión (modo offline)",
+                    color = CicloPrimary,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }

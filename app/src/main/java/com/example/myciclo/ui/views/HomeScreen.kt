@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -36,19 +37,20 @@ import com.example.myciclo.ui.viewmodel.DiarioViewModel
 @Composable
 fun HomeScreen(
     diarioViewModel: DiarioViewModel,
-    onCerrarSesion: () -> Unit
+    onCerrarSesion: () -> Unit,
+    esInvitado: Boolean = false
 ) {
     var pestanaSeleccionada by remember { mutableIntStateOf(0) }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("MyCiclo") },
+                title = { Text(if (esInvitado) "MyCiclo (Invitado)" else "MyCiclo") },
                 actions = {
                     IconButton(onClick = onCerrarSesion) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                            contentDescription = "Cerrar Sesión"
+                            contentDescription = if (esInvitado) "Salir del modo offline" else "Cerrar Sesión"
                         )
                     }
                 }
@@ -71,10 +73,24 @@ fun HomeScreen(
             }
         }
     ) { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
-            when (pestanaSeleccionada) {
-                0 -> DiarioScreen(viewModel = diarioViewModel)
-                1 -> EducacionContenido()
+        Column(modifier = Modifier.padding(paddingValues)) {
+            if (esInvitado) {
+                Surface(
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Modo offline: tus registros se guardan solo en este dispositivo y no están asociados a una cuenta.",
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                }
+            }
+            Box(modifier = Modifier.weight(1f)) {
+                when (pestanaSeleccionada) {
+                    0 -> DiarioScreen(viewModel = diarioViewModel)
+                    1 -> EducacionContenido()
+                }
             }
         }
     }

@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+const val ID_USUARIO_INVITADO = 0L
+
 data class EstadoDiarioUI(
     val estadoFertilidad: String = "Infértil / Fase Folicular Temprana",
     val mensajeDiagnostico: String = "No se detecta patrón de helechos. Probabilidad baja de ovulación.",
