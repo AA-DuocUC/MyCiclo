@@ -14,7 +14,6 @@ object AppViewModelProvider {
                 myApplication().container.usuarioRepository,
                 myApplication().container.sesionRepository
             )
-
         }
         initializer {
             RegistroViewModel(
@@ -27,11 +26,27 @@ object AppViewModelProvider {
                 db.registroDiarioDao()
             )
         }
+        initializer {
+            val db = AppDatabase.getInstance(myApplication().applicationContext)
+            CalendarioViewModel(
+                db.eventoCicloDao(),
+                db.registroDiarioDao()
+            )
+        }
     }
+
     val FactoryInvitado = viewModelFactory {
         initializer {
             val db = AppDatabase.getInstance(myApplication().applicationContext)
             DiarioViewModel(
+                db.registroDiarioDao(),
+                usuarioIdActual = ID_USUARIO_INVITADO
+            )
+        }
+        initializer {
+            val db = AppDatabase.getInstance(myApplication().applicationContext)
+            CalendarioViewModel(
+                db.eventoCicloDao(),
                 db.registroDiarioDao(),
                 usuarioIdActual = ID_USUARIO_INVITADO
             )
