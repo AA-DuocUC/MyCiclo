@@ -38,6 +38,7 @@ import com.example.myciclo.ui.viewmodel.DiarioViewModel
 fun HomeScreen(
     diarioViewModel: DiarioViewModel,
     onCerrarSesion: () -> Unit,
+    onAbrirBitacora: () -> Unit = {},
     esInvitado: Boolean = false
 ) {
     var pestanaSeleccionada by remember { mutableIntStateOf(0) }
@@ -47,6 +48,12 @@ fun HomeScreen(
             TopAppBar(
                 title = { Text(if (esInvitado) "MyCiclo (Invitado)" else "MyCiclo") },
                 actions = {
+                    IconButton(onClick = onAbrirBitacora) {
+                        Icon(
+                            imageVector = Icons.Default.DateRange,
+                            contentDescription = "Abrir Bitácora (calendario)"
+                        )
+                    }
                     IconButton(onClick = onCerrarSesion) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ExitToApp,

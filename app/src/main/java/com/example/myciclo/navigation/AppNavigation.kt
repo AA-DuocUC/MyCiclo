@@ -3,12 +3,16 @@ package com.example.myciclo.navigation
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.example.myciclo.ui.views.BitacoraScreen
 import com.example.myciclo.ui.views.HomeScreen
 import com.example.myciclo.ui.views.LoginScreen
 import com.example.myciclo.ui.views.RegistroScreen
 import com.example.myciclo.ui.viewmodel.AppViewModelProvider
+import com.example.myciclo.ui.viewmodel.CalendarioViewModel
 import com.example.myciclo.ui.viewmodel.DiarioViewModel
 import com.example.myciclo.ui.viewmodel.LoginViewModel
 
@@ -50,6 +54,7 @@ fun AppNavigation(navController: NavHostController) {
             val diarioViewModel: DiarioViewModel = viewModel(factory = AppViewModelProvider.Factory)
             HomeScreen(
                 diarioViewModel = diarioViewModel,
+                onAbrirBitacora = { navController.navigate("bitacora/false") },
                 onCerrarSesion = {
                     navController.navigate("login") {
                         popUpTo("home") { inclusive = true }
@@ -63,11 +68,28 @@ fun AppNavigation(navController: NavHostController) {
             HomeScreen(
                 diarioViewModel = diarioViewModel,
                 esInvitado = true,
+                onAbrirBitacora = { navController.navigate("bitacora/true") },
                 onCerrarSesion = {
                     navController.navigate("login") {
                         popUpTo("invitado") { inclusive = true }
                     }
                 }
+            )
+        }
+
+        composable(
+            route = "bitacora/{invitado}",
+            arguments = listOf(navArgument("invitado") { type = NavType.BoolType })
+        ) { entrada ->
+            val invitado = entrada.arguments?.getBoolean("invitado") ?: false
+            val calendarioViewModel: CalendarioViewModel = viewModel(
+                factory = if (invitado) AppViewModelProvider.FactoryInvitado
+                else AppViewModelProvider.Factory
+            )
+            BitacoraScreen(
+                viewModel = calendarioViewModel,
+                esInvitado = invitado,
+                onVolver = { navController.popBackStack() }
             )
         }
     }
