@@ -572,6 +572,15 @@ private fun RegistroFila(registro: RegistroDiarioEntity) {
                 modifier = Modifier.padding(start = 18.dp)
             )
         }
+        registro.fotoPath?.let { ruta ->
+            FotoMiniatura(
+                ruta = ruta,
+                modifier = Modifier
+                    .padding(start = 18.dp, top = 8.dp)
+                    .size(96.dp)
+                    .clip(RoundedCornerShape(12.dp))
+            )
+        }
         HorizontalDivider(modifier = Modifier.padding(top = 12.dp))
     }
 }

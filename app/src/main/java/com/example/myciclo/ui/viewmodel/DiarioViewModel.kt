@@ -40,14 +40,19 @@ class DiarioViewModel(
         }
     }
 
-    fun guardarNuevoRegistro(diaDelCiclo: Int, estadoSaliva: String, notas: String) {
+    fun guardarNuevoRegistro(
+        diaDelCiclo: Int,
+        estadoSaliva: String,
+        notas: String,
+        fotoPath: String? = null
+    ) {
         viewModelScope.launch {
             val nuevoRegistro = RegistroDiarioEntity(
                 usuarioId = usuarioIdActual,
                 fecha = System.currentTimeMillis().toString(),
                 diaDelCiclo = diaDelCiclo,
                 estadoCristalizacion = estadoSaliva,
-                fotoPath = null,
+                fotoPath = fotoPath,
                 notas = notas
             )
             registroDiarioDao.insertarRegistro(nuevoRegistro)
